@@ -8,6 +8,7 @@ DerivedDataCache/
 Intermediate/
 Saved/
 Build/
+.idea/
 
 # Ignore configuration and autosave files
 *.sln
