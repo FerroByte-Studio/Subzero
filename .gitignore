@@ -1,0 +1,92 @@
+# ============================================================
+# Unreal Engine 5 .gitignore
+# ============================================================
+
+# Ignore compiled binaries and build files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# Ignore configuration and autosave files
+*.sln
+*.opensdf
+*.sdf
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch
+*.log
+*.tlog
+*.obj
+*.pch
+
+# Ignore packaged builds
+*.pak
+*.pdb
+*.exe
+*.dll
+*.lib
+*.app
+*.dmg
+*.so
+*.a
+*.zip
+
+# Ignore user-specific and local files
+*.user
+*.userprefs
+*.VC.db
+*.VC.opendb
+.vs/
+.idea/
+.vscode/
+*.VC.db-wal
+*.VC.db-shm
+
+# Ignore crash reports and autosaves
+*.pid
+*.dmp
+*.tmp
+*.bak
+*.old
+*.orig
+*.log
+*.err
+*.swp
+*.swo
+*.DS_Store
+
+# Ignore Unreal Engine auto-generated files
+Script/
+Content/Developers/
+Content/Collections/
+Config/DefaultEditor.ini
+Config/DefaultEditorPerProjectUserSettings.ini
+
+# Ignore platform-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Ignore custom cache folders
+*.cache
+*.log
+*.vspscc
+*.vssscc
+
+# Ignore third-party dependencies that are locally downloaded
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+Plugins/*/DerivedDataCache/
+Plugins/*/Saved/
+
+# ============================================================
+# You SHOULD commit:
+#   - .uproject and .uplugin files
+#   - Config/*.ini
+#   - Source/ folder
+#   - Content/ folder (except auto-generated developer folders)
+# ============================================================
