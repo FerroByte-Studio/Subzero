@@ -15,6 +15,9 @@ class SUBZERO_API ASZ_PlayerCharacter : public ASZ_BaseCharacter
 {
 	GENERATED_BODY()
 
+	// Reference to Weapon
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Subzero|Weapon", meta=(AllowPrivateAccess = true))
+	TSubclassOf<AActor> Rifle;
 public:
 	// Sets default values for this character's properties
 	ASZ_PlayerCharacter();
@@ -32,6 +35,16 @@ public:
 	USZ_StaminaComponent* StaminaComp;
 
 	bool RequestJumpWithStamina();
+
+	// Reload Montage
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Subzero|Animation")
+	TObjectPtr<UAnimMontage> PistolReloadMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Subzero|Animation")
+	TObjectPtr<UAnimMontage> PistolEquipMontage;
+
+	void Reload();
+	void EquipWeapon();
 
 protected:
 	virtual void BeginPlay() override;

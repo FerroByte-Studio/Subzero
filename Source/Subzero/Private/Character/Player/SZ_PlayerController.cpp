@@ -30,6 +30,16 @@ void ASZ_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::OnSprintpStarted);
 	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::OnSprintCompleted);
+	EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ASZ_PlayerController::Reload);
+}
+
+
+void ASZ_PlayerController::Reload()
+{
+	ASZ_PlayerCharacter* Char = Cast<ASZ_PlayerCharacter>(GetPawn());
+
+	Char->Reload();
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Playing Reload Animation"));
 }
 
 void ASZ_PlayerController::Jump()

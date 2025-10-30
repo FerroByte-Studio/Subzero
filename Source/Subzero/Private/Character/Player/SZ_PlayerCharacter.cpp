@@ -4,6 +4,7 @@
 #include "Character/Player/SZ_PlayerCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Character/Player/SZ_PlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SZ_StaminaComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -32,13 +33,34 @@ ASZ_PlayerCharacter::ASZ_PlayerCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
-	CameraBoom->SetupAttachment(GetRootComponent());
-	CameraBoom->TargetArmLength = 600.f;
+	CameraBoom->SetupAttachment(GetMesh(), "neck_02");
+	CameraBoom->TargetArmLength = 0.f;
 	CameraBoom->bUsePawnControlRotation = true;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+void ASZ_PlayerCharacter::Reload()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!IsValid(AnimInstance)) return;
+
+	AnimInstance->Montage_Play(PistolReloadMontage, 1.f);
+}
+
+void ASZ_PlayerCharacter::EquipWeapon()
+{
+	ASZ_PlayerController* SZController = Cast<ASZ_PlayerController>(GetController());
+
+	const FRotator Rotation = SZController->PlayerCameraManager->GetCameraRotation();
+	const FVector Location = GetOwner()->GetActorLocation();
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AActor* ASVal = GetWorld()->SpawnActor<AActor>(Rifle, Location, Rotation, SpawnParameters);
 }
 
 void ASZ_PlayerCharacter::BeginPlay()

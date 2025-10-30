@@ -37,6 +37,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="SubZero|Input")
 	TObjectPtr<UInputAction> SprintAction;
 
+	UPROPERTY(EditDefaultsOnly, Category="Subzero|Input")
+	TObjectPtr<UInputAction> ReloadAction;
+
+	void Reload();
 	void Jump();
 	void StopJumping();
 	void Move(const FInputActionValue& Value);
