@@ -5,6 +5,8 @@
 #include "Character/Player/SZ_PlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Character/Player/SZ_PlayerCharacter.h"
+#include "Components/SZ_StaminaComponent.h"
 #include "GameFramework/Character.h"
 
 void ASZ_PlayerController::SetupInputComponent()
@@ -26,6 +28,8 @@ void ASZ_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::StopJumping);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::OnSprintpStarted);
+	EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::OnSprintCompleted);
 }
 
 void ASZ_PlayerController::Jump()
@@ -64,3 +68,31 @@ void ASZ_PlayerController::Look(const FInputActionValue& Value)
 	AddYawInput(LookAxisVector.X);
 	AddPitchInput(LookAxisVector.Y);
 }
+
+void ASZ_PlayerController::OnSprintpStarted(const FInputActionValue& Value)
+{
+	if (ASZ_PlayerCharacter* C = GetSZCharacter())
+	{
+		if (C->StaminaComp)
+		{
+			const bool bStarted = C->StaminaComp->StartSprinting();
+		}
+	}
+}
+
+void ASZ_PlayerController::OnSprintCompleted(const FInputActionValue& Value)
+{
+	if (ASZ_PlayerCharacter* C = GetSZCharacter())
+	{
+		if (C->StaminaComp)
+		{
+			C->StaminaComp->StopSprinting();
+		}
+	}
+}
+
+class ASZ_PlayerCharacter* ASZ_PlayerController::GetSZCharacter() const
+{
+	return Cast<ASZ_PlayerCharacter>(GetPawn());
+}
+

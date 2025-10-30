@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "SZ_PlayerController.generated.h"
 
@@ -33,8 +34,16 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="SubZero|Input")
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditDefaultsOnly, Category="SubZero|Input")
+	TObjectPtr<UInputAction> SprintAction;
+
 	void Jump();
 	void StopJumping();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+
+	void OnSprintpStarted(const FInputActionValue& Value);
+	void OnSprintCompleted(const FInputActionValue& Value);
+
+	class ASZ_PlayerCharacter* GetSZCharacter() const;
 };

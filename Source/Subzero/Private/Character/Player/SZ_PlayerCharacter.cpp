@@ -5,6 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SZ_StaminaComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -38,6 +39,48 @@ ASZ_PlayerCharacter::ASZ_PlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+void ASZ_PlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	ApplyWalkSpeed();
+
+	if (StaminaComp)
+	{
+		StaminaComp->OnSprintStateChanged.AddDynamic(this, &ThisClass::OnSprintStateChanged);
+	}
+}
+
+void ASZ_PlayerCharacter::OnSprintStateChanged(bool bIsSprinting)
+{
+	if (bIsSprinting) ApplySprintSpeed();
+	else ApplyWalkSpeed();
+}
+
+
+void ASZ_PlayerCharacter::ApplyWalkSpeed()
+{
+	if (!GetCharacterMovement()) return;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void ASZ_PlayerCharacter::ApplySprintSpeed()
+{
+	if (!GetCharacterMovement()) return;
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+bool ASZ_PlayerCharacter::RequestJumpWithStamina()
+{
+	if (!StaminaComp) { Jump(); return true; }
+
+	if (StaminaComp->TryConsume(JumpStaminaCost))
+	{
+		Jump();
+		return true;
+	}
+	return false;
 }
 
 
